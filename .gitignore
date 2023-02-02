@@ -1,0 +1,44 @@
+## folders
+.vscode/
+apps/
+data/
+docs/
+extension_examples
+extension_examples/
+extscache/
+jupyter_kernel/
+kit/
+PACKAGE-LICENSES/
+ros_workspace/
+ros2_workspace/
+standalone_examples/
+tests/
+tools/
+
+exts/*
+!exts/omni
+exts/omni/*
+!exts/omni/isaac
+exts/omni/isaac/*
+!exts/omni.isaac.universal_robots_UR5e
+# !exts/omni.isaac.universal_robots_UR5e/*
+# !exts/omni/isaac/universal_robots_UR5e
+# !exts/omni/isaac/universal_robots_UR5e/*
+# !exts/omni/isaac/universal_robots_UR5e/config
+# !exts/omni/isaac/universal_robots_UR5e/data
+# !exts/omni/isaac/universal_robots_UR5e/docs
+# !exts/omni/isaac/universal_robots_UR5e/omni
+# !exts/omni/isaac/universal_robots_UR5e/config/*
+# !exts/omni/isaac/universal_robots_UR5e/data/*
+# !exts/omni/isaac/universal_robots_UR5e/docs/*
+# !exts/omni/isaac/universal_robots_UR5e/omni/*
+
+
+
+## files
+*.sh
+*.json
+*.yml
+*.yaml
+*.toml
+*.log
