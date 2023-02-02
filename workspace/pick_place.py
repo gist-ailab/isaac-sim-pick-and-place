@@ -10,8 +10,8 @@ from omni.isaac.kit import SimulationApp
 
 simulation_app = SimulationApp({"headless": False})
 
-from omni.isaac.universal_robots.tasks import PickPlace
-from omni.isaac.universal_robots.controllers import PickPlaceController
+from omni.isaac.universal_robots_UR5e.tasks import PickPlace
+from omni.isaac.universal_robots_UR5e.controllers import PickPlaceController
 from omni.isaac.core import World
 import numpy as np
 
@@ -20,9 +20,9 @@ my_task = PickPlace()
 my_world.add_task(my_task)
 my_world.reset()
 task_params = my_task.get_params()
-my_ur10 = my_world.scene.get_object(task_params["robot_name"]["value"])
-my_controller = PickPlaceController(name="pick_place_controller", gripper=my_ur10.gripper, robot_articulation=my_ur10)
-articulation_controller = my_ur10.get_articulation_controller()
+my_ur5e = my_world.scene.get_object(task_params["robot_name"]["value"])
+my_controller = PickPlaceController(name="pick_place_controller", gripper=my_ur5e.gripper, robot_articulation=my_ur5e)
+articulation_controller = my_ur5e.get_articulation_controller()
 
 i = 0
 while simulation_app.is_running():

@@ -11,7 +11,8 @@ from omni.isaac.core.utils.types import ArticulationAction
 from omni.isaac.core.articulations import Articulation
 from omni.isaac.manipulators.grippers.surface_gripper import SurfaceGripper
 import omni.isaac.manipulators.controllers as manipulators_controllers
-from omni.isaac.universal_robots.controllers import RMPFlowController
+# from omni.isaac..controllers import RMPFlowController
+from omni.isaac.universal_robots_UR5e.controllers import RMPFlowController
 import numpy as np
 from typing import Optional, List
 

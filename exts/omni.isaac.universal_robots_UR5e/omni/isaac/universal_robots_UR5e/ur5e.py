@@ -57,7 +57,8 @@ class UR5e(Robot):
                 if assets_root_path is None:
                     carb.log_error("Could not find Isaac Sim assets folder")
                     return
-                usd_path = assets_root_path + "/Isaac/Robots/UR10/ur10.usd"
+                ### TODO HS
+                usd_path = assets_root_path + "/Isaac/Robots/UniversalRobots/ur5e/ur5e.usd"
                 add_reference_to_stage(usd_path=usd_path, prim_path=prim_path)
             if self._end_effector_prim_name is None:
                 self._end_effector_prim_path = prim_path + "/ee_link"
@@ -79,7 +80,10 @@ class UR5e(Robot):
                 if assets_root_path is None:
                     carb.log_error("Could not find Isaac Sim assets folder")
                     return
-                gripper_usd = assets_root_path + "/Isaac/Robots/UR10/Props/short_gripper.usd"
+                #### TODO HS
+                # gripper_usd = assets_root_path + "/Isaac/Robots/Robotiq/2F-85/2f85_instanceable.usd"
+                gripper_usd = '/home/hse/Desktop/ur5e_gripper/2F-85/2f85_instanceable.usd'
+                print('gripper_usd', gripper_usd)
                 add_reference_to_stage(usd_path=gripper_usd, prim_path=self._end_effector_prim_path)
                 self._gripper = SurfaceGripper(
                     end_effector_prim_path=self._end_effector_prim_path, translate=0.1611, direction="x"

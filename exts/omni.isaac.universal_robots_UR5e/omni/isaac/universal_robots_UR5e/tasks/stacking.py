@@ -8,7 +8,7 @@
 #
 from omni.isaac.core.tasks import Stacking as BaseStacking
 from omni.isaac.core.utils.stage import get_stage_units
-from omni.isaac.universal_robots import UR10
+from omni.isaac.universal_robots_UR5e import UR5e
 from omni.isaac.core.utils.prims import is_prim_path_valid
 from omni.isaac.core.utils.string import find_unique_string_name
 import numpy as np
@@ -45,19 +45,19 @@ class Stacking(BaseStacking):
         )
         return
 
-    def set_robot(self) -> UR10:
+    def set_robot(self) -> UR5e:
         """[summary]
 
         Returns:
-            UR10: [description]
+            UR5e: [description]
         """
         ur10_prim_path = find_unique_string_name(
-            initial_name="/World/ur10", is_unique_fn=lambda x: not is_prim_path_valid(x)
+            initial_name="/World/ur5e", is_unique_fn=lambda x: not is_prim_path_valid(x)
         )
         ur10_robot_name = find_unique_string_name(
             initial_name="my_ur10", is_unique_fn=lambda x: not self.scene.object_exists(x)
         )
-        self._ur10_robot = UR10(prim_path=ur10_prim_path, name=ur10_robot_name, attach_gripper=True)
+        self._ur10_robot = UR5e(prim_path=ur10_prim_path, name=ur10_robot_name, attach_gripper=True)
         self._ur10_robot.set_joints_default_state(
             positions=np.array([-np.pi / 2, -np.pi / 2, -np.pi / 2, -np.pi / 2, np.pi / 2, 0])
         )

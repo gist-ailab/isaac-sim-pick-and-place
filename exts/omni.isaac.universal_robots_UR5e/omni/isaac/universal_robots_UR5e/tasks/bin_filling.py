@@ -8,7 +8,7 @@
 #
 from omni.isaac.core.tasks import BaseTask
 from omni.isaac.core.scenes.scene import Scene
-from omni.isaac.universal_robots import UR10
+from omni.isaac.universal_robots_UR5e import UR5e
 import numpy as np
 from omni.isaac.core.utils.stage import add_reference_to_stage, get_stage_units
 from omni.isaac.core.utils.nucleus import get_assets_root_path
@@ -19,7 +19,7 @@ import random
 
 
 class BinFilling(BaseTask):
-    """Task using UR10 robot to fill a bin with screws and showcase the surface gripper torque/ force limits.
+    """Task using UR5e robot to fill a bin with screws and showcase the surface gripper torque/ force limits.
 
         Args:
             name (str, optional): Task name identifier. Should be unique if added to the World. Defaults to "bin_filling".
@@ -27,13 +27,13 @@ class BinFilling(BaseTask):
 
     def __init__(self, name: str = "bin_filling") -> None:
         BaseTask.__init__(self, name=name, offset=None)
-        self._ur10_robot = None
+        self._ur5e_robot = None
         self._packing_bin = None
         self._assets_root_path = get_assets_root_path()
         if self._assets_root_path is None:
             carb.log_error("Could not find Isaac Sim assets folder")
             return
-        self._ur10_asset_path = self._assets_root_path + "/Isaac/Samples/Leonardo/Stage/ur10_bin_filling.usd"
+        self._ur5e_asset_path = self._assets_root_path + "/Isaac/Samples/Leonardo/Stage/ur5e_bin_filling.usd"
         self._screw_asset_paths = [
             self._assets_root_path + "/Isaac/Props/Flip_Stack/large_corner_bracket_physics.usd",
             self._assets_root_path + "/Isaac/Props/Flip_Stack/screw_95_physics.usd",
@@ -64,17 +64,17 @@ class BinFilling(BaseTask):
             scene (Scene): The world's scene.
         """
         super().set_up_scene(scene)
-        add_reference_to_stage(usd_path=self._ur10_asset_path, prim_path="/World/Scene")
-        self._ur10_robot = scene.add(
-            UR10(prim_path="/World/Scene/ur10", name="my_ur10", gripper_usd=None, attach_gripper=True)
+        add_reference_to_stage(usd_path=self._ur5e_asset_path, prim_path="/World/Scene")
+        self._ur5e_robot = scene.add(
+            UR5e(prim_path="/World/Scene/ur5e", name="my_ur5e", gripper_usd=None, attach_gripper=True)
         )
-        self._ur10_robot.gripper.set_translate(value=0.162)
-        self._ur10_robot.set_joints_default_state(
+        self._ur5e_robot.gripper.set_translate(value=0.162)
+        self._ur5e_robot.set_joints_default_state(
             positions=np.array([-np.pi / 2, -np.pi / 2, -np.pi / 2, -np.pi / 2, np.pi / 2, 0])
         )
-        self._ur10_robot.gripper.set_direction(value="x")
-        self._ur10_robot.gripper.set_force_limit(value=1.0e2)
-        self._ur10_robot.gripper.set_torque_limit(value=1.0e2)
+        self._ur5e_robot.gripper.set_direction(value="x")
+        self._ur5e_robot.gripper.set_force_limit(value=1.0e2)
+        self._ur5e_robot.gripper.set_torque_limit(value=1.0e2)
         self._packing_bin = scene.add(
             RigidPrim(
                 prim_path="/World/Scene/bin",
@@ -94,7 +94,7 @@ class BinFilling(BaseTask):
                 - orientation
                 - target_position
                 - size
-            - my_ur10:
+            - my_ur5e:
                 - joint_positions
                 - end_effector_position
                 - end_effector_orientation
@@ -102,9 +102,9 @@ class BinFilling(BaseTask):
         Returns:
             dict: [description]
         """
-        joints_state = self._ur10_robot.get_joints_state()
+        joints_state = self._ur5e_robot.get_joints_state()
         bin_position, bin_orientation = self._packing_bin.get_world_pose()
-        end_effector_position, end_effector_orientation = self._ur10_robot.end_effector.get_world_pose()
+        end_effector_position, end_effector_orientation = self._ur5e_robot.end_effector.get_world_pose()
         # TODO: change values with USD
         return {
             "packing_bin": {
@@ -113,7 +113,7 @@ class BinFilling(BaseTask):
                 "target_position": self._target_position,
                 "size": self._bin_size,
             },
-            "my_ur10": {
+            "my_ur5e": {
                 "joint_positions": joints_state.positions,
                 "end_effector_position": end_effector_position,
                 "end_effector_orientation": end_effector_orientation,
@@ -128,7 +128,7 @@ class BinFilling(BaseTask):
             simulation_time (float): Current simulation time.
         """
         BaseTask.pre_step(self, time_step_index=time_step_index, simulation_time=simulation_time)
-        self._ur10_robot.gripper.update()
+        self._ur5e_robot.gripper.update()
         if self._screws_to_add > 0 and len(self._screws) < self._max_screws and time_step_index % 30 == 0:
             self._add_screw()
         return
@@ -179,5 +179,5 @@ class BinFilling(BaseTask):
         """
         params_representation = dict()
         params_representation["bin_name"] = {"value": self._packing_bin.name, "modifiable": False}
-        params_representation["robot_name"] = {"value": self._ur10_robot.name, "modifiable": False}
+        params_representation["robot_name"] = {"value": self._ur5e_robot.name, "modifiable": False}
         return params_representation

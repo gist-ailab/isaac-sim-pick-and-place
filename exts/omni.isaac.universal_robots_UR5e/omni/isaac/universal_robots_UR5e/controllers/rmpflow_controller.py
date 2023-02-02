@@ -26,10 +26,10 @@ class RMPFlowController(mg.MotionPolicyController):
 
         if attach_gripper:
             self.rmp_flow_config = mg.interface_config_loader.load_supported_motion_policy_config(
-                "UR10", "RMPflowSuction"
+                "UR5e", "RMPflow"
             )
         else:
-            self.rmp_flow_config = mg.interface_config_loader.load_supported_motion_policy_config("UR10", "RMPflow")
+            self.rmp_flow_config = mg.interface_config_loader.load_supported_motion_policy_config("UR5e", "RMPflow")
         self.rmp_flow = mg.lula.motion_policies.RmpFlow(**self.rmp_flow_config)
 
         self.articulation_rmp = mg.ArticulationMotionPolicy(robot_articulation, self.rmp_flow, physics_dt)

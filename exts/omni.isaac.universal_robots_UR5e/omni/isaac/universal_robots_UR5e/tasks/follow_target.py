@@ -7,7 +7,7 @@
 # license agreement from NVIDIA CORPORATION is strictly prohibited.
 #
 import omni.isaac.core.tasks as tasks
-from omni.isaac.universal_robots import UR10
+from omni.isaac.universal_robots_UR5e import UR5e
 from omni.isaac.core.utils.prims import is_prim_path_valid
 from omni.isaac.core.utils.string import find_unique_string_name
 from omni.isaac.core.utils.rotations import euler_angles_to_quat
@@ -58,21 +58,21 @@ class FollowTarget(tasks.FollowTarget):
         self._attach_gripper = attach_gripper
         return
 
-    def set_robot(self) -> UR10:
+    def set_robot(self) -> UR5e:
         """[summary]
 
         Returns:
-            UR10: [description]
+            UR5e: [description]
         """
         if self._ur10_prim_path is None:
             self._ur10_prim_path = find_unique_string_name(
-                initial_name="/World/UR10", is_unique_fn=lambda x: not is_prim_path_valid(x)
+                initial_name="/World/UR5e", is_unique_fn=lambda x: not is_prim_path_valid(x)
             )
         if self._ur10_robot_name is None:
             self._ur10_robot_name = find_unique_string_name(
                 initial_name="my_ur10", is_unique_fn=lambda x: not self.scene.object_exists(x)
             )
-        self._ur10_robot = UR10(
+        self._ur10_robot = UR5e(
             prim_path=self._ur10_prim_path, name=self._ur10_robot_name, attach_gripper=self._attach_gripper
         )
         self._ur10_robot.set_joints_default_state(

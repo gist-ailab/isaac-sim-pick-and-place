@@ -7,7 +7,7 @@
 # license agreement from NVIDIA CORPORATION is strictly prohibited.
 #
 import omni.isaac.core.tasks as tasks
-from omni.isaac.universal_robots import UR10
+from omni.isaac.universal_robots_UR5e import UR5e
 from omni.isaac.core.utils.prims import is_prim_path_valid
 from omni.isaac.core.utils.string import find_unique_string_name
 from omni.isaac.core.utils.stage import get_stage_units
@@ -19,7 +19,7 @@ class PickPlace(tasks.PickPlace):
     """[summary]
 
         Args:
-            name (str, optional): [description]. Defaults to "ur10_pick_place".
+            name (str, optional): [description]. Defaults to "ur5e_pick_place".
             cube_initial_position (Optional[np.ndarray], optional): [description]. Defaults to None.
             cube_initial_orientation (Optional[np.ndarray], optional): [description]. Defaults to None.
             target_position (Optional[np.ndarray], optional): [description]. Defaults to None.
@@ -29,7 +29,7 @@ class PickPlace(tasks.PickPlace):
 
     def __init__(
         self,
-        name: str = "ur10_pick_place",
+        name: str = "ur5e_pick_place",
         cube_initial_position: Optional[np.ndarray] = None,
         cube_initial_orientation: Optional[np.ndarray] = None,
         target_position: Optional[np.ndarray] = None,
@@ -53,23 +53,24 @@ class PickPlace(tasks.PickPlace):
         )
         return
 
-    def set_robot(self) -> UR10:
+    def set_robot(self) -> UR5e:
         """[summary]
 
         Returns:
-            UR10: [description]
+            UR5e: [description]
         """
-        ur10_prim_path = find_unique_string_name(
-            initial_name="/World/UR10", is_unique_fn=lambda x: not is_prim_path_valid(x)
+        ur5e_prim_path = find_unique_string_name(
+            initial_name="/World/UR5e", is_unique_fn=lambda x: not is_prim_path_valid(x)
         )
-        ur10_robot_name = find_unique_string_name(
-            initial_name="my_ur10", is_unique_fn=lambda x: not self.scene.object_exists(x)
+        ur5e_robot_name = find_unique_string_name(
+            initial_name="my_ur5e", is_unique_fn=lambda x: not self.scene.object_exists(x)
         )
-        self._ur10_robot = UR10(prim_path=ur10_prim_path, name=ur10_robot_name, attach_gripper=True)
-        self._ur10_robot.set_joints_default_state(
+        self._ur5e_robot = UR5e(prim_path=ur5e_prim_path, name=ur5e_robot_name, attach_gripper=True,
+                                end_effector_prim_name='tool0')
+        self._ur5e_robot.set_joints_default_state(
             positions=np.array([-np.pi / 2, -np.pi / 2, -np.pi / 2, -np.pi / 2, np.pi / 2, 0])
         )
-        return self._ur10_robot
+        return self._ur5e_robot
 
     def pre_step(self, time_step_index: int, simulation_time: float) -> None:
         """[summary]
@@ -79,5 +80,5 @@ class PickPlace(tasks.PickPlace):
             simulation_time (float): [description]
         """
         tasks.PickPlace.pre_step(self, time_step_index=time_step_index, simulation_time=simulation_time)
-        self._ur10_robot.gripper.update()
+        self._ur5e_robot.gripper.update()
         return

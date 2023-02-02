@@ -1,6 +1,5 @@
 ## folders
 .vscode/
-apps/
 data/
 docs/
 extension_examples
@@ -15,23 +14,23 @@ standalone_examples/
 tests/
 tools/
 
+
+apps/*
+# !apps/omni
+# apps/omni/*
+# !apps/omni/isaac
+# apps/omni/isaac/*
+# !apps/omni/isaac/sim
+# apps/omni/isaac/sim/*
+!apps/omni.issac.sim.python.kit
+
+
 exts/*
 !exts/omni
 exts/omni/*
 !exts/omni/isaac
 exts/omni/isaac/*
 !exts/omni.isaac.universal_robots_UR5e
-# !exts/omni.isaac.universal_robots_UR5e/*
-# !exts/omni/isaac/universal_robots_UR5e
-# !exts/omni/isaac/universal_robots_UR5e/*
-# !exts/omni/isaac/universal_robots_UR5e/config
-# !exts/omni/isaac/universal_robots_UR5e/data
-# !exts/omni/isaac/universal_robots_UR5e/docs
-# !exts/omni/isaac/universal_robots_UR5e/omni
-# !exts/omni/isaac/universal_robots_UR5e/config/*
-# !exts/omni/isaac/universal_robots_UR5e/data/*
-# !exts/omni/isaac/universal_robots_UR5e/docs/*
-# !exts/omni/isaac/universal_robots_UR5e/omni/*
 
 
 

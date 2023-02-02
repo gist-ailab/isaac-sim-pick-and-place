@@ -14,11 +14,11 @@ from typing import Optional
 
 
 class KinematicsSolver(ArticulationKinematicsSolver):
-    """Kinematics Solver for UR10 robot.  This class loads a LulaKinematicsSovler object
+    """Kinematics Solver for UR5e robot.  This class loads a LulaKinematicsSovler object
 
     Args:
-        robot_articulation (Articulation): An initialized Articulation object representing this UR10
-        end_effector_frame_name (Optional[str]): The name of the UR10 end effector.  If None, an end effector link will
+        robot_articulation (Articulation): An initialized Articulation object representing this UR5e
+        end_effector_frame_name (Optional[str]): The name of the UR5e end effector.  If None, an end effector link will
             be automatically selected.  Defaults to None.
         attach_gripper (Optional[bool]): If True, a URDF will be loaded that includes a suction gripper.  Defaults to False. 
     """
@@ -33,16 +33,16 @@ class KinematicsSolver(ArticulationKinematicsSolver):
         mg_extension_path = get_extension_path_from_name("omni.isaac.motion_generation")
 
         if attach_gripper:
-            robot_urdf_path = os.path.join(mg_extension_path, "motion_policy_configs/ur10/ur10_robot_suction.urdf")
+            robot_urdf_path = os.path.join(mg_extension_path, "motion_policy_configs/ur5e/ur10_robot_suction.urdf")
         else:
-            robot_urdf_path = os.path.join(mg_extension_path, "motion_policy_configs/ur10/ur10_robot.urdf")
+            robot_urdf_path = os.path.join(mg_extension_path, "motion_policy_configs/ur5e/ur10_robot.urdf")
         if attach_gripper:
             robot_description_yaml_path = os.path.join(
-                mg_extension_path, "motion_policy_configs/ur10/rmpflow_suction/ur10_robot_description.yaml"
+                mg_extension_path, "motion_policy_configs/ur5e/rmpflow_suction/ur10_robot_description.yaml"
             )
         else:
             robot_description_yaml_path = os.path.join(
-                mg_extension_path, "motion_policy_configs/ur10/rmpflow/ur10_robot_description.yaml"
+                mg_extension_path, "motion_policy_configs/ur5e/rmpflow/ur10_robot_description.yaml"
             )
 
         self._kinematics = LulaKinematicsSolver(
