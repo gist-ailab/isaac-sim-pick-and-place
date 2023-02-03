@@ -36,23 +36,23 @@ class InverseKinematicsSolver(BaseInverseKinematicsSolver):
         mg_extension_path = get_extension_path_from_name("omni.isaac.motion_generation")
         if robot_urdf_path is None:
             if attach_gripper:
-                robot_urdf_path = os.path.join(mg_extension_path, "policy_configs/ur5e/ur10_robot_suction.urdf")
+                robot_urdf_path = os.path.join(mg_extension_path, "policy_configs/ur5e/ur5e_robotiq2f85.urdf")
             else:
-                robot_urdf_path = os.path.join(mg_extension_path, "policy_configs/ur5e/ur10_robot.urdf")
+                robot_urdf_path = os.path.join(mg_extension_path, "policy_configs/ur5e/ur5e_robotiq2f85.urdf")
         if robot_description_yaml_path is None:
             if attach_gripper:
                 robot_description_yaml_path = os.path.join(
-                    mg_extension_path, "policy_configs/ur5e/rmpflow_suction/ur10_robot_description.yaml"
+                    mg_extension_path, "policy_configs/ur5e/rmpflow/ur5e_robot_description.yaml"
                 )
             else:
                 robot_description_yaml_path = os.path.join(
-                    mg_extension_path, "policy_configs/ur5e/rmpflow/ur10_robot_description.yaml"
+                    mg_extension_path, "policy_configs/ur5e/rmpflow/ur5e_robot_description.yaml"
                 )
         if end_effector_frame_name is None:
             if attach_gripper:
-                end_effector_frame_name = "ee_suction_link"
+                end_effector_frame_name = "tool0"
             else:
-                end_effector_frame_name = "ee_link"
+                end_effector_frame_name = "tool0"
         BaseInverseKinematicsSolver.__init__(
             self,
             name=name,

@@ -35,6 +35,14 @@ exts/omni/*
 !exts/omni/isaac
 exts/omni/isaac/*
 !exts/omni.isaac.universal_robots_UR5e
+!exts/omni.isaac.motion_generation
+exts/omni.isaac.motion_generation/*
+!exts/omni.isaac.motion_generation/motion_policy_configs
+exts/omni.isaac.motion_generation/motion_policy_configs/*
+!exts/omni.isaac.motion_generation/motion_policy_configs/universal_robots
+exts/omni.isaac.motion_generation/motion_policy_configs/universal_robots/*
+!exts/omni.isaac.motion_generation/motion_policy_configs/universal_robots/ur5e
+!exts/omni.isaac.motion_generation/motion_policy_configs/universal_robots/policy_map.json
 
 
 

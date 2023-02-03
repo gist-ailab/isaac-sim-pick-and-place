@@ -33,16 +33,16 @@ class KinematicsSolver(ArticulationKinematicsSolver):
         mg_extension_path = get_extension_path_from_name("omni.isaac.motion_generation")
 
         if attach_gripper:
-            robot_urdf_path = os.path.join(mg_extension_path, "motion_policy_configs/ur5e/ur10_robot_suction.urdf")
+            robot_urdf_path = os.path.join(mg_extension_path, "motion_policy_configs/ur5e/ur5e_robotiq2f85.urdf")
         else:
-            robot_urdf_path = os.path.join(mg_extension_path, "motion_policy_configs/ur5e/ur10_robot.urdf")
+            robot_urdf_path = os.path.join(mg_extension_path, "motion_policy_configs/ur5e/ur5e_robotiq2f85.urdf")
         if attach_gripper:
             robot_description_yaml_path = os.path.join(
-                mg_extension_path, "motion_policy_configs/ur5e/rmpflow_suction/ur10_robot_description.yaml"
+                mg_extension_path, "motion_policy_configs/ur5e/rmpflow_suction/ur5e_robot_description.yaml"
             )
         else:
             robot_description_yaml_path = os.path.join(
-                mg_extension_path, "motion_policy_configs/ur5e/rmpflow/ur10_robot_description.yaml"
+                mg_extension_path, "motion_policy_configs/ur5e/rmpflow/ur5e_robot_description.yaml"
             )
 
         self._kinematics = LulaKinematicsSolver(
@@ -51,9 +51,9 @@ class KinematicsSolver(ArticulationKinematicsSolver):
 
         if end_effector_frame_name is None:
             if attach_gripper:
-                end_effector_frame_name = "ee_suction_link"
+                end_effector_frame_name = "tool0"
             else:
-                end_effector_frame_name = "ee_link"
+                end_effector_frame_name = "tool0"
 
         ArticulationKinematicsSolver.__init__(self, robot_articulation, self._kinematics, end_effector_frame_name)
 
