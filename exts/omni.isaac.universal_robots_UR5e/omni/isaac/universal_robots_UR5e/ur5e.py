@@ -6,14 +6,14 @@
 # distribution of this software and related documentation without an express
 # license agreement from NVIDIA CORPORATION is strictly prohibited.
 #
-from typing import Optional
+from typing import Optional, List
 import numpy as np
 from omni.isaac.core.robots.robot import Robot
 from omni.isaac.core.prims.rigid_prim import RigidPrim
-from omni.isaac.manipulators.grippers.surface_gripper import SurfaceGripper
+from omni.isaac.manipulators.grippers.parallel_gripper import ParallelGripper
 from omni.isaac.core.utils.prims import get_prim_at_path
-from omni.isaac.core.utils.stage import add_reference_to_stage
 from omni.isaac.core.utils.nucleus import get_assets_root_path
+from omni.isaac.core.utils.stage import add_reference_to_stage, get_stage_units
 import carb
 
 
@@ -29,6 +29,9 @@ class UR5e(Robot):
             end_effector_prim_name (Optional[str], optional): [description]. Defaults to None.
             attach_gripper (bool, optional): [description]. Defaults to False.
             gripper_usd (Optional[str], optional): [description]. Defaults to "default".
+            gripper_dof_names (Optional[List[str]], optional): [description]. Defaults to None.
+            gripper_open_position (Optional[np.ndarray], optional): [description]. Defaults to None.
+            gripper_closed_position (Optional[np.ndarray], optional): [description]. Defaults to None.
 
         Raises:
             NotImplementedError: [description]
@@ -44,6 +47,10 @@ class UR5e(Robot):
         end_effector_prim_name: Optional[str] = None,
         attach_gripper: bool = False,
         gripper_usd: Optional[str] = "default",
+        gripper_dof_names: Optional[List[str]] = None,
+        gripper_open_position: Optional[np.ndarray] = None,
+        gripper_closed_position: Optional[np.ndarray] = None,
+        deltas: Optional[np.ndarray] = None,
     ) -> None:
         prim = get_prim_at_path(prim_path)
         self._end_effector = None
@@ -64,6 +71,14 @@ class UR5e(Robot):
                 self._end_effector_prim_path = prim_path + "/ee_link"
             else:
                 self._end_effector_prim_path = prim_path + "/" + end_effector_prim_name
+            if gripper_dof_names is None:
+                gripper_dof_names = ["finger_joint", "left_inner_knuckle_joint", "right_inner_knuckle_joint", "right_outer_knuckle_joint",
+                                     "root_joint", "left_outer_finger_joint", "left_inner_finger_joint", "left_inner_finger_pad_joint", 
+                                     "right_outer_finger_joint", "right_inner_finger_joint", "right_inner_finger_pad_joint"]
+            if gripper_open_position is None:
+                gripper_open_position = np.array([0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05]) / get_stage_units()
+            if gripper_closed_position is None:
+                gripper_closed_position = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
         else:
             # TODO: change this
             if self._end_effector_prim_name is None:
@@ -85,14 +100,24 @@ class UR5e(Robot):
                 gripper_usd = '/home/hse/Desktop/ur5e_gripper/2F-85/2f85_instanceable.usd'
                 print('gripper_usd', gripper_usd)
                 add_reference_to_stage(usd_path=gripper_usd, prim_path=self._end_effector_prim_path)
-                self._gripper = SurfaceGripper(
-                    end_effector_prim_path=self._end_effector_prim_path, translate=0.1611, direction="x"
+                if deltas is None:
+                    deltas = np.array([0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05]) / get_stage_units()
+                self._gripper = ParallelGripper(
+                    end_effector_prim_path=self._end_effector_prim_path,
+                    joint_prim_names=gripper_dof_names,
+                    joint_opened_positions=gripper_open_position,
+                    joint_closed_positions=gripper_closed_position,
+                    action_deltas=deltas,
                 )
+                # self._gripper = SurfaceGripper(
+                #     end_effector_prim_path=self._end_effector_prim_path, translate=0.1611, direction="x"
+                # )
             elif gripper_usd is None:
                 carb.log_warn("Not adding a gripper usd, the gripper already exists in the ur5e asset")
-                self._gripper = SurfaceGripper(
-                    end_effector_prim_path=self._end_effector_prim_path, translate=0.1611, direction="x"
-                )
+
+                # self._gripper = SurfaceGripper(
+                #     end_effector_prim_path=self._end_effector_prim_path, translate=0.1611, direction="x"
+                # )
             else:
                 raise NotImplementedError
         self._attach_gripper = attach_gripper
@@ -117,11 +142,11 @@ class UR5e(Robot):
         return self._end_effector
 
     @property
-    def gripper(self) -> SurfaceGripper:
+    def gripper(self) -> ParallelGripper:
         """[summary]
 
         Returns:
-            SurfaceGripper: [description]
+            ParallelGripper: [description]
         """
         return self._gripper
 
@@ -129,11 +154,17 @@ class UR5e(Robot):
         """[summary]
         """
         super().initialize(physics_sim_view)
-        if self._attach_gripper:
-            self._gripper.initialize(physics_sim_view=physics_sim_view, articulation_num_dofs=self.num_dof)
         self._end_effector = RigidPrim(prim_path=self._end_effector_prim_path, name=self.name + "_end_effector")
         self.disable_gravity()
         self._end_effector.initialize(physics_sim_view)
+        if self._attach_gripper:
+            self._gripper.initialize(
+                physics_sim_view=physics_sim_view,
+                articulation_apply_action_func=self.apply_action,
+                get_joint_positions_func=self.get_joint_positions,
+                set_joint_positions_func=self.set_joint_positions,
+                dof_names=self.dof_names,
+            )
         return
 
     def post_reset(self) -> None:

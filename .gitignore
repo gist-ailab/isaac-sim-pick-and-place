@@ -16,13 +16,17 @@ tools/
 
 
 apps/*
-# !apps/omni
+!apps/omni.isaac.sim
+apps/omni.isaac.sim/*
+!apps/omni.issac.sim.python.kit
 # apps/omni/*
 # !apps/omni/isaac
 # apps/omni/isaac/*
 # !apps/omni/isaac/sim
 # apps/omni/isaac/sim/*
-!apps/omni.issac.sim.python.kit
+# !apps/omni/isaac/sim/python
+# apps/omni/isaac/sim/python/*
+
 
 
 exts/*
