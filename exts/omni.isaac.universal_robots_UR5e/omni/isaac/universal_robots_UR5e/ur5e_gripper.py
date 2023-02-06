@@ -27,8 +27,6 @@ class UR5e(Robot):
             position (Optional[np.ndarray], optional): [description]. Defaults to None.
             orientation (Optional[np.ndarray], optional): [description]. Defaults to None.
             end_effector_prim_name (Optional[str], optional): [description]. Defaults to None.
-            attach_gripper (bool, optional): [description]. Defaults to False.
-            gripper_usd (Optional[str], optional): [description]. Defaults to "default".
             gripper_dof_names (Optional[List[str]], optional): [description]. Defaults to None.
             gripper_open_position (Optional[np.ndarray], optional): [description]. Defaults to None.
             gripper_closed_position (Optional[np.ndarray], optional): [description]. Defaults to None.
@@ -42,8 +40,8 @@ class UR5e(Robot):
         position: Optional[np.ndarray] = None,
         orientation: Optional[np.ndarray] = None,
         end_effector_prim_name: Optional[str] = None,
-        attach_gripper: bool = False,
-        gripper_usd: Optional[str] = "default",
+        # attach_gripper: bool = False,
+        # gripper_usd: Optional[str] = "default",
         gripper_dof_names: Optional[List[str]] = None,
         gripper_open_position: Optional[np.ndarray] = None,
         gripper_closed_position: Optional[np.ndarray] = None,

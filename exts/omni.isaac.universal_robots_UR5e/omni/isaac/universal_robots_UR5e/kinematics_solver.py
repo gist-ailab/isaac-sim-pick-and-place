@@ -38,11 +38,11 @@ class KinematicsSolver(ArticulationKinematicsSolver):
             robot_urdf_path = os.path.join(mg_extension_path, "motion_policy_configs/ur5e/ur5e_robotiq2f85.urdf")
         if attach_gripper:
             robot_description_yaml_path = os.path.join(
-                mg_extension_path, "motion_policy_configs/ur5e/rmpflow_suction/ur5e_robot_description.yaml"
+                mg_extension_path, "motion_policy_configs/ur5e/rmpflow_suction/ur5e_with_gripper_description.yaml"
             )
         else:
             robot_description_yaml_path = os.path.join(
-                mg_extension_path, "motion_policy_configs/ur5e/rmpflow/ur5e_robot_description.yaml"
+                mg_extension_path, "motion_policy_configs/ur5e/rmpflow/ur5e_with_gripper_description.yaml"
             )
 
         self._kinematics = LulaKinematicsSolver(

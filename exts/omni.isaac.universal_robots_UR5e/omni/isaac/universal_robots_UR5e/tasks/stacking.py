@@ -19,7 +19,7 @@ class Stacking(BaseStacking):
     """[summary]
 
         Args:
-            name (str, optional): [description]. Defaults to "ur10_stacking".
+            name (str, optional): [description]. Defaults to "ur5e_stacking".
             target_position (Optional[np.ndarray], optional): [description]. Defaults to None.
             cube_size (Optional[np.ndarray], optional): [description]. Defaults to None.
             offset (Optional[np.ndarray], optional): [description]. Defaults to None.
@@ -27,7 +27,7 @@ class Stacking(BaseStacking):
 
     def __init__(
         self,
-        name: str = "ur10_stacking",
+        name: str = "ur5e_stacking",
         target_position: Optional[np.ndarray] = None,
         cube_size: Optional[np.ndarray] = None,
         offset: Optional[np.ndarray] = None,
@@ -51,17 +51,17 @@ class Stacking(BaseStacking):
         Returns:
             UR5e: [description]
         """
-        ur10_prim_path = find_unique_string_name(
+        ur5e_prim_path = find_unique_string_name(
             initial_name="/World/ur5e", is_unique_fn=lambda x: not is_prim_path_valid(x)
         )
-        ur10_robot_name = find_unique_string_name(
-            initial_name="my_ur10", is_unique_fn=lambda x: not self.scene.object_exists(x)
+        ur5e_robot_name = find_unique_string_name(
+            initial_name="my_ur5e", is_unique_fn=lambda x: not self.scene.object_exists(x)
         )
-        self._ur10_robot = UR5e(prim_path=ur10_prim_path, name=ur10_robot_name, attach_gripper=True)
-        self._ur10_robot.set_joints_default_state(
+        self._ur5e_robot = UR5e(prim_path=ur5e_prim_path, name=ur5e_robot_name, attach_gripper=True)
+        self._ur5e_robot.set_joints_default_state(
             positions=np.array([-np.pi / 2, -np.pi / 2, -np.pi / 2, -np.pi / 2, np.pi / 2, 0])
         )
-        return self._ur10_robot
+        return self._ur5e_robot
 
     def pre_step(self, time_step_index: int, simulation_time: float) -> None:
         """[summary]
@@ -71,5 +71,5 @@ class Stacking(BaseStacking):
             simulation_time (float): [description]
         """
         BaseStacking.pre_step(self, time_step_index=time_step_index, simulation_time=simulation_time)
-        self._ur10_robot.gripper.update()
+        self._ur5e_robot.gripper.update()
         return

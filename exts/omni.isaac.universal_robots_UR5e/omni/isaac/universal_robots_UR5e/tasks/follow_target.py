@@ -19,27 +19,27 @@ class FollowTarget(tasks.FollowTarget):
     """[summary]
 
         Args:
-            name (str, optional): [description]. Defaults to "ur10_follow_target".
+            name (str, optional): [description]. Defaults to "ur5e_follow_target".
             target_prim_path (Optional[str], optional): [description]. Defaults to None.
             target_name (Optional[str], optional): [description]. Defaults to None.
             target_position (Optional[np.ndarray], optional): [description]. Defaults to None.
             target_orientation (Optional[np.ndarray], optional): [description]. Defaults to None.
             offset (Optional[np.ndarray], optional): [description]. Defaults to None.
-            ur10_prim_path (Optional[str], optional): [description]. Defaults to None.
-            ur10_robot_name (Optional[str], optional): [description]. Defaults to None.
+            ur5e_prim_path (Optional[str], optional): [description]. Defaults to None.
+            ur5e_robot_name (Optional[str], optional): [description]. Defaults to None.
             attach_gripper (bool, optional): [description]. Defaults to False.
         """
 
     def __init__(
         self,
-        name: str = "ur10_follow_target",
+        name: str = "ur5e_follow_target",
         target_prim_path: Optional[str] = None,
         target_name: Optional[str] = None,
         target_position: Optional[np.ndarray] = None,
         target_orientation: Optional[np.ndarray] = None,
         offset: Optional[np.ndarray] = None,
-        ur10_prim_path: Optional[str] = None,
-        ur10_robot_name: Optional[str] = None,
+        ur5e_prim_path: Optional[str] = None,
+        ur5e_robot_name: Optional[str] = None,
         attach_gripper: bool = False,
     ) -> None:
         if target_orientation is None:
@@ -53,8 +53,8 @@ class FollowTarget(tasks.FollowTarget):
             target_orientation=target_orientation,
             offset=offset,
         )
-        self._ur10_prim_path = ur10_prim_path
-        self._ur10_robot_name = ur10_robot_name
+        self._ur5e_prim_path = ur5e_prim_path
+        self._ur5e_robot_name = ur5e_robot_name
         self._attach_gripper = attach_gripper
         return
 
@@ -64,18 +64,18 @@ class FollowTarget(tasks.FollowTarget):
         Returns:
             UR5e: [description]
         """
-        if self._ur10_prim_path is None:
-            self._ur10_prim_path = find_unique_string_name(
+        if self._ur5e_prim_path is None:
+            self._ur5e_prim_path = find_unique_string_name(
                 initial_name="/World/UR5e", is_unique_fn=lambda x: not is_prim_path_valid(x)
             )
-        if self._ur10_robot_name is None:
-            self._ur10_robot_name = find_unique_string_name(
-                initial_name="my_ur10", is_unique_fn=lambda x: not self.scene.object_exists(x)
+        if self._ur5e_robot_name is None:
+            self._ur5e_robot_name = find_unique_string_name(
+                initial_name="my_ur5e", is_unique_fn=lambda x: not self.scene.object_exists(x)
             )
-        self._ur10_robot = UR5e(
-            prim_path=self._ur10_prim_path, name=self._ur10_robot_name, attach_gripper=self._attach_gripper
+        self._ur5e_robot = UR5e(
+            prim_path=self._ur5e_prim_path, name=self._ur5e_robot_name, attach_gripper=self._attach_gripper
         )
-        self._ur10_robot.set_joints_default_state(
+        self._ur5e_robot.set_joints_default_state(
             positions=np.array([-np.pi / 2, -np.pi / 2, -np.pi / 2, -np.pi / 2, np.pi / 2, 0])
         )
-        return self._ur10_robot
+        return self._ur5e_robot

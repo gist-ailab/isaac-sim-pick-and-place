@@ -42,11 +42,11 @@ class InverseKinematicsSolver(BaseInverseKinematicsSolver):
         if robot_description_yaml_path is None:
             if attach_gripper:
                 robot_description_yaml_path = os.path.join(
-                    mg_extension_path, "policy_configs/ur5e/rmpflow/ur5e_robot_description.yaml"
+                    mg_extension_path, "policy_configs/ur5e/rmpflow/ur5e_with_gripper_description.yaml"
                 )
             else:
                 robot_description_yaml_path = os.path.join(
-                    mg_extension_path, "policy_configs/ur5e/rmpflow/ur5e_robot_description.yaml"
+                    mg_extension_path, "policy_configs/ur5e/rmpflow/ur5e_with_gripper_description.yaml"
                 )
         if end_effector_frame_name is None:
             if attach_gripper:
